@@ -17,6 +17,7 @@ RUN         apt update && \
 # Configuration
 COPY        vhost.conf /etc/nginx/sites-available/default
 
+RUN         mv /var/www/html/* /var/www/ && rm -rf /var/www/html
 RUN         mkdir /var/log/nginx
 RUN         chmod 755 /var/log/nginx
 
