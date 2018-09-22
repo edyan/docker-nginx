@@ -5,7 +5,7 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 RUN         apk update && apk add --no-cache gettext shadow && \
             mv /usr/local/bin/envsubst /bin/ && \
             apk del gettext && \
-            rm -rf /var/cache/apk/*
+            rm -rf /var/cache/apk/* /var/log/*
 
 # Prepare env and change user
 RUN         mkdir /var/www
