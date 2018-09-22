@@ -13,12 +13,13 @@ server {
         include fastcgi_params;
         include /etc/nginx/fastcgi_params;
 
-        fastcgi_pass  php:9000;
+        set $upstream ${PHP_HOST}:${PHP_PORT};
+        fastcgi_pass  $upstream;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param SERVER_NAME $host;
     }
-    
-    error_log /var/log/nginx/project_error.log;
-    access_log /var/log/nginx/project_access.log;   
+
+    error_log /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
 }

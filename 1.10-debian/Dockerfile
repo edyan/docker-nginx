@@ -3,11 +3,13 @@ MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
+# Set a default conf for apt install
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends
 # Installation
 RUN         apt update && \
             apt upgrade -y && \
             # Packages
-            apt install -y --no-install-recommends nginx && \
+            apt install -y nginx gettext-base && \
             # Clean
             apt autoremove -y && \
             apt autoclean && \
@@ -15,7 +17,7 @@ RUN         apt update && \
             rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
 # Configuration
-COPY        vhost.conf /etc/nginx/sites-available/default
+COPY        conf/default /etc/nginx/sites-available/default
 
 RUN         mv /var/www/html/* /var/www/ && rm -rf /var/www/html
 RUN         mkdir /var/log/nginx
@@ -23,6 +25,8 @@ RUN         chmod 755 /var/log/nginx
 
 ENV         NGINX_UID 33
 ENV         NGINX_GID 33
+ENV         PHP_HOST  php
+ENV         PHP_PORT  9000
 
 EXPOSE      80
 

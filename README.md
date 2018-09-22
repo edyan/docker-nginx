@@ -17,9 +17,12 @@ nginx:
         - php
 ```
 
+If you have no `php` container, nginx will start without any upstream configuration.
+
 
 ## Environment variables
-Two variables have been created, to override the user and group that owns Nginx (and all its files).
-That's useful if you need to mount a volume and own the files.
+Two variables have been created, to override the user and group that owns Nginx (and all its files). That's useful if you need to mount a volume and own the files.
 
 These environment variables are `NGINX_UID` and `NGINX_GID`.
+
+Another two environment variables lets anybody override the `php` container name : `PHP_HOST` and `PHP_PORT`.
