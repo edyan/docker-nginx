@@ -9,7 +9,7 @@ jobs:
       - setup_remote_docker
 
       - run:
-          name: Install goss
+          name: Install tools
           command: |
             # rather than give internet scripts SU rights, we install to local user bin and add to path
             apk update && apk add bash curl
