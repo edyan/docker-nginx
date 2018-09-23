@@ -1,12 +1,10 @@
+version: 2
 jobs:
   build:
     docker:
       - image: circleci/python:2-jessie
     steps:
       - checkout
-
-      - setup_remote_docker:
-          docker_layer_caching:
 
       - run:
           name: Install goss
@@ -21,18 +19,15 @@ jobs:
       - run:
           name: Test Debian Image
           command: |
-            # Don't forget path!
-            export PATH=$PATH:~/bin
             # Important, change from mount to work on remote docker, see https://github.com/aelsabbahy/goss/pull/271
             # If using machine image you do not need this.
             export GOSS_FILES_STRATEGY=cp
-            ./test.sh 1.10-debian
+            PATH=$PATH:~/bin ./test.sh 1.10-debian
 
       - run:
           name: Test Alpine Image
           command: |
-            export PATH=$PATH:~/bin
             export GOSS_FILES_STRATEGY=cp
-            ./test.sh 1.15-alpine
+            PATH=$PATH:~/bin ./test.sh 1.15-alpine
       - store_test_results:
           path: goss
