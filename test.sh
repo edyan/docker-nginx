@@ -19,7 +19,7 @@ docker build -t "edyan_nginx${VERSION}_test" .
 echo ""
 echo -e "${GREEN}Test without PHP${NC}"
 cd ${DIRECTORY}/${1}/tests/test-nophp
-dgoss run "edyan_nginx${VERSION}_test"
+dgoss run -p 80:80 "edyan_nginx${VERSION}_test"
 
 
 echo ""
@@ -31,6 +31,6 @@ docker network create nginx-test || : true > /dev/null
 docker run -d --rm --network nginx-test --name php-test-ctn edyan/php:latest
 docker exec php-test-ctn bash -c "mkdir /var/www && echo \"<?='Hello world!'?>\" > /var/www/test.php"
 cd ${DIRECTORY}/${1}/tests/test-php
-dgoss run --network nginx-test -e PHP_HOST=php-test-ctn "edyan_nginx${VERSION}_test"
+dgoss run -p 80:80 --network nginx-test -e PHP_HOST=php-test-ctn "edyan_nginx${VERSION}_test"
 docker stop php-test-ctn
 docker network rm nginx-test
