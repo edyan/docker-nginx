@@ -21,11 +21,11 @@ port:
     ip:
     - 0.0.0.0
 command:
- nginx -v:
+  nginx -v:
     exit-status: 0
     stdout: []
     stderr:
-    - 'nginx version: nginx/1.15.3'
+    - 'nginx/1.15'
     timeout: 10000
 process:
   nginx:
@@ -38,6 +38,9 @@ http:
     timeout: 5000
     body:
     - Welcome to nginx!
+  # http://localhost/test.php:
+  #   status: 500
+  #   timeout: 5000
   http://localhost/abc:
     status: 404
     allow-insecure: false

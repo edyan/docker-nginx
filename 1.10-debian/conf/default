@@ -13,6 +13,7 @@ server {
         include fastcgi_params;
         include /etc/nginx/fastcgi_params;
 
+        resolver 127.0.0.11;
         set $upstream ${PHP_HOST}:${PHP_PORT};
         fastcgi_pass  $upstream;
         fastcgi_index index.php;

@@ -1,0 +1,54 @@
+file:
+  /var/log/nginx/access.log:
+    exists: true
+    mode: "0644"
+    size: 0
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /var/log/nginx/error.log:
+    exists: true
+    mode: "0644"
+    size: 0
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+port:
+  tcp:80:
+    listening: true
+    ip:
+    - 0.0.0.0
+command:
+  nginx -v:
+    exit-status: 0
+    stdout: []
+    stderr:
+    - 'nginx/1.15'
+    timeout: 10000
+process:
+  nginx:
+    running: true
+http:
+  http://localhost:
+    status: 200
+    allow-insecure: false
+    no-follow-redirects: false
+    timeout: 1000
+    body:
+    - Welcome to nginx!
+  http://localhost/test.php:
+    status: 200
+    allow-insecure: false
+    no-follow-redirects: false
+    timeout: 1000
+    body:
+    - Hello world!
+  http://localhost/abc:
+    status: 404
+    allow-insecure: false
+    no-follow-redirects: false
+    timeout: 0
+    body:
+    - 404 Not Found

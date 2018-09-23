@@ -19,6 +19,9 @@ http:
     timeout: 5000
     body:
       - "Welcome to nginx!"
+  http://localhost/test.php:
+    status: 500
+    timeout: 5000
   http://localhost/abc:
     status: 404
     body:
@@ -40,4 +43,3 @@ file:
     group: root
     filetype: file
     contains: []
-
