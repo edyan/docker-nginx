@@ -32,5 +32,8 @@ docker run -d --rm --network nginx-test --name php-test-ctn edyan/php:latest
 docker exec php-test-ctn bash -c "mkdir /var/www && echo \"<?='Hello world!'?>\" > /var/www/test.php"
 cd ${DIRECTORY}/${1}/tests/test-php
 dgoss run --network nginx-test -e PHP_HOST=php-test-ctn "edyan_nginx${VERSION}_test"
-docker stop php-test-ctn
-docker network rm nginx-test
+# clean
+docker stop php-test-ctn || : true > /dev/null
+docker network rm nginx-test || : true > /dev/null
+
+exit 0

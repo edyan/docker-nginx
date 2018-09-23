@@ -11,5 +11,4 @@ env:
 script:
   - sudo apt-get update && apt-get upgrade && apt-get install -y --no-install-recommends curl
   - curl -fsSL https://goss.rocks/install | sudo sh
-  - ./test.sh 1.10-debian
-  - ./test.sh 1.15-alpine
+  - ./test.sh 1.10-debian && ./test.sh 1.15-alpine
