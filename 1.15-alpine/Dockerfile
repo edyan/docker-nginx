@@ -8,10 +8,11 @@ RUN         apk update && apk add --no-cache gettext shadow && \
             rm -rf /var/cache/apk/* /var/log/*
 
 # Prepare env and change user
-RUN         mkdir /var/www
+RUN         mkdir /var/www /var/log/nginx
 RUN         groupmod -g 101 -n www-data nginx
 RUN         usermod  -g 101 -u 100 -l www-data -d /var/www nginx
-RUN         chown www-data:www-data /var/www
+RUN         mv /usr/share/nginx/html/* /var/www/
+RUN         chown -R www-data:www-data /var/www
 
 
 # Configuration
