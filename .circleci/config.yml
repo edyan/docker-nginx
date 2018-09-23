@@ -1,20 +1,19 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/project
     docker:
-      - image: circleci/python:2-jessie
+      - image: docker:18-dind
     steps:
       - checkout
+      - setup_remote_docker
 
       - run:
           name: Install goss
           command: |
             # rather than give internet scripts SU rights, we install to local user bin and add to path
-            mkdir ~/bin
-            export GOSS_DST=~/bin
-            export PATH=$PATH:~/bin
+            apk update && apk add bash curl
             curl -fsSL https://goss.rocks/install | sh
-            goss -version
 
       - run:
           name: Test Debian Image
@@ -22,12 +21,10 @@ jobs:
             # Important, change from mount to work on remote docker, see https://github.com/aelsabbahy/goss/pull/271
             # If using machine image you do not need this.
             export GOSS_FILES_STRATEGY=cp
-            PATH=$PATH:~/bin ./test.sh 1.10-debian
+            ./test.sh 1.10-debian
 
       - run:
           name: Test Alpine Image
           command: |
             export GOSS_FILES_STRATEGY=cp
-            PATH=$PATH:~/bin ./test.sh 1.15-alpine
-      - store_test_results:
-          path: goss
+            ./test.sh 1.15-alpine
