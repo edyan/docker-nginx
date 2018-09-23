@@ -1,5 +1,5 @@
 jobs:
-  test:
+  build:
     docker:
       - image: circleci/python:2-jessie
     steps:
@@ -7,6 +7,7 @@ jobs:
 
       - setup_remote_docker:
           docker_layer_caching:
+
       - run:
           name: Install goss
           command: |
@@ -16,6 +17,7 @@ jobs:
             export PATH=$PATH:~/bin
             curl -fsSL https://goss.rocks/install | sh
             goss -version
+
       - run:
           name: Test Debian Image
           command: |
@@ -25,6 +27,7 @@ jobs:
             # If using machine image you do not need this.
             export GOSS_FILES_STRATEGY=cp
             ./test.sh 1.10-debian
+
       - run:
           name: Test Debian Image
           command: |
