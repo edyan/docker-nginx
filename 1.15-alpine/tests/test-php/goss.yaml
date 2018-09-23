@@ -2,19 +2,15 @@ file:
   /var/log/nginx/access.log:
     exists: true
     mode: "0644"
-    size: 0
     owner: root
     group: root
     filetype: file
-    contains: []
   /var/log/nginx/error.log:
     exists: true
     mode: "0644"
-    size: 0
     owner: root
     group: root
     filetype: file
-    contains: []
 port:
   tcp:80:
     listening: true
