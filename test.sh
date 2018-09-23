@@ -36,4 +36,4 @@ dgoss run --network nginx-test -e PHP_HOST=php-test-ctn "edyan_nginx${VERSION}_t
 docker stop php-test-ctn || : true > /dev/null
 docker network rm nginx-test || : true > /dev/null
 
-exit 0
+echo -e "${GREEN}Job's done${NC}"
