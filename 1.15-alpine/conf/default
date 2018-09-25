@@ -1,7 +1,7 @@
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    root /var/www;
+    root ${NGINX_DOCUMENT_ROOT};
     index index.php index.html index.htm index.nginx-debian.html;
 
     server_name _;

@@ -17,9 +17,13 @@ docker build -t "edyan_nginx${VERSION}_test" .
 
 
 echo ""
-echo -e "${GREEN}Test without PHP${NC}"
+echo -e "${GREEN}Test without PHP and default Document Root${NC}"
 cd ${DIRECTORY}/${1}/tests/test-nophp
 dgoss run "edyan_nginx${VERSION}_test"
+
+# echo ""
+# echo -e "${GREEN}Test without PHP and another document root${NC}"
+# dgoss run -e NGINX_DOCUMENT_ROOT=/tmp/testdocroot --name nginx_test "edyan_nginx${VERSION}_test"
 
 
 echo ""

@@ -16,14 +16,17 @@ RUN         chown -R www-data:www-data /var/www
 
 
 # Configuration
+RUN         rm -f /etc/nginx/conf.d/default.conf
 RUN         sed -i 's/^user .*nginx;/user  www-data;/g' /etc/nginx/nginx.conf
-COPY        conf/default /etc/nginx/conf.d/default.conf
+COPY        conf/default /etc/nginx/conf.d/default.conf.tpl
 
 
 ENV         NGINX_UID 100
 ENV         NGINX_GID 101
+ENV         NGINX_DOCUMENT_ROOT /var/www
 ENV         PHP_HOST  php
 ENV         PHP_PORT  9000
+
 
 EXPOSE      80
 

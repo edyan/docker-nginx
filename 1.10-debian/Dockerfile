@@ -17,7 +17,8 @@ RUN         apt update && \
             rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
 # Configuration
-COPY        conf/default /etc/nginx/sites-available/default
+RUN         rm -f /etc/nginx/sites-available/default
+COPY        conf/default /etc/nginx/sites-available/default.tpl
 
 RUN         mv /var/www/html/* /var/www/ && rm -rf /var/www/html
 RUN         mkdir /var/log/nginx
@@ -25,6 +26,7 @@ RUN         chmod 755 /var/log/nginx
 
 ENV         NGINX_UID 33
 ENV         NGINX_GID 33
+ENV         NGINX_DOCUMENT_ROOT /var/www
 ENV         PHP_HOST  php
 ENV         PHP_PORT  9000
 

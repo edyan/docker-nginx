@@ -7,6 +7,10 @@ if [ "$CURRENT_NGINX_ID" != "$NGINX_UID" ]; then
     chown -R www-data:www-data /var/www /var/lib/nginx /var/log/nginx
 fi
 
-envsubst '\$PHP_HOST \$PHP_PORT' < /etc/nginx/sites-available/default > /etc/nginx/sites-available/default
+if [ ! -f /etc/nginx/sites-available/default ]; then
+    echo "Using template as default site"
+    envsubst '\$PHP_HOST \$PHP_PORT \$NGINX_DOCUMENT_ROOT' < /etc/nginx/sites-available/default.tpl > /etc/nginx/sites-available/default
+fi
 
+echo "Starting nginx"
 exec nginx -g 'daemon off;'
