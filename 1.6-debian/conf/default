@@ -1,0 +1,26 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root ${NGINX_DOCUMENT_ROOT};
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+    location / {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        include /etc/nginx/fastcgi_params;
+
+        resolver 127.0.0.11;
+        set $upstream ${PHP_HOST}:${PHP_PORT};
+        fastcgi_pass  $upstream;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param SERVER_NAME $host;
+    }
+
+    error_log /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+}
