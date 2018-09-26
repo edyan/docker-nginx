@@ -27,7 +27,7 @@ process:
   nginx:
     running: true
 http:
-  http://localhost:
+  http://localhost/index.html:
     status: 200
     allow-insecure: false
     no-follow-redirects: false

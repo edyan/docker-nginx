@@ -21,6 +21,7 @@ RUN         rm -f /etc/nginx/sites-available/default
 COPY        conf/default /etc/nginx/sites-available/default.tpl
 
 RUN         mv /var/www/html/* /var/www/ && rm -rf /var/www/html
+RUN         mv /var/www/index.nginx-debian.html /var/www/index.html
 RUN         mkdir /var/log/nginx
 RUN         chmod 755 /var/log/nginx
 

@@ -4,7 +4,10 @@
 
 Docker Hub: https://hub.docker.com/r/edyan/nginx
 
-Docker container containing Nginx that connects to an FPM service.
+Docker container containing Nginx that connects to an FPM service. If no FPM service available, nginx will still start
+but throw usual 404 errors when the actual file does not exist.
+
+Also it has a "rewrite rule" that sends everything to index.php.
 
 ## Usage
 Add the following to your docker-compose.yml, assuming that your PHP VM is named `php` (see  [edyan/php](https://github.com/edyan/docker-php)).
@@ -20,12 +23,13 @@ nginx:
         - php
 ```
 
-If you have no `php` container, nginx will start without any upstream configuration.
+If you have no `php` container, nginx will start without any upstream configuration (1.6 will throw a 500, others work).
 
 
 ## Versions
-* `1.15-alpine` : A light version
-* `1.10-alpine` : A production lookalike version (also `latest`)
+* `1.15-alpine` : A light version.
+* `1.10-debian` : A production lookalike version with Debian 9 (also `latest`).
+* `1.6-debian` : A production lookalike version with Debian 8 (throws an error if there are no upstream).
 
 
 ## Environment variables
@@ -39,6 +43,7 @@ Finally, if you want to set your own document root, you can use `NGINX_DOCUMENT_
 ## Tests
 Tests are made with [goss](https://github.com/aelsabbahy/goss). After downloading it, run :
 ```bash
-./tests.sh 1.10-debian
-./tests.sh 1.15-alpine
+./test.sh 1.6-debian
+./test.sh 1.10-debian
+./test.sh 1.15-alpine
 ```

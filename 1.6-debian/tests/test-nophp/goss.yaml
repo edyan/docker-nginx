@@ -13,10 +13,13 @@ process:
     running: true
 http:
   http://localhost:
-    status: 500
-    allow-insecure: false
-    no-follow-redirects: false
-    timeout: 5000
+    status: 404
+    body:
+    - 404 Not Found
+  http://localhost/abc:
+    status: 404
+    body:
+    - 404 Not Found
 file:
   /var/log/nginx/access.log:
     exists: true
