@@ -19,8 +19,6 @@ nginx:
         - ./www:/var/www/html
     ports:
         - 80:80
-    links:
-        - php
 ```
 
 If you have no `php` container, nginx will start without any upstream configuration (1.6 will throw a 500, others work).
