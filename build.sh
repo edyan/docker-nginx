@@ -29,5 +29,5 @@ if [ $? -eq 0 ]; then
     echo "  docker network rm nginx-test"
     echo ""
     echo "Or if you want to directly enter the container, then remove it : "
-    echo "  docker run -ti --rm edyan_nginx${VERSION}_test /bin/bash"
+    echo "  docker run -ti --rm edyan_nginx${VERSION}_test /bin/sh"
 fi

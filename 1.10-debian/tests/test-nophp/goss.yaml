@@ -2,7 +2,8 @@ package:
   nginx:
     installed: true
     versions:
-      - "1.10.3-1+deb9u1"
+      contain-element:
+        match-regexp: "1.10.+deb9u[0-9]+"
 port:
   tcp:80:
     listening: true
