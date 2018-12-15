@@ -1,5 +1,5 @@
 # Nginx Docker Image for PHP FPM
-[![Build Status](https://travis-ci.org/edyan/docker-nginx.svg?branch=master)](https://travis-ci.org/edyan/docker-nginx)
+[![Build Status](https://travis-ci.com/edyan/docker-nginx.svg?branch=master)](https://travis-ci.com/edyan/docker-nginx)
 [![Docker Pulls](https://img.shields.io/docker/pulls/edyan/nginx.svg)](https://hub.docker.com/r/edyan/nginx/)
 
 Docker Hub: https://hub.docker.com/r/edyan/nginx
