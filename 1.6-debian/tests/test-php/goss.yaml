@@ -15,22 +15,16 @@ process:
 http:
   http://localhost/index.html:
     status: 200
-    allow-insecure: false
-    no-follow-redirects: false
-    timeout: 5000
     body:
     - Welcome to nginx on Debian!
   http://localhost/test.php:
     status: 200
-    allow-insecure: false
-    no-follow-redirects: false
-    timeout: 5000
     body:
     - Hello world!
   http://localhost/abc:
     status: 404
     body:
-    - 404 Not Found
+    - File not found
 file:
   /var/log/nginx/access.log:
     exists: true

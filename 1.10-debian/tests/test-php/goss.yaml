@@ -30,7 +30,7 @@ http:
   http://localhost/abc:
     status: 404
     body:
-    - 404 Not Found
+    - File not found
 file:
   /var/log/nginx/access.log:
     exists: true

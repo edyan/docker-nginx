@@ -29,22 +29,13 @@ process:
 http:
   http://localhost/index.html:
     status: 200
-    allow-insecure: false
-    no-follow-redirects: false
-    timeout: 1000
     body:
     - Welcome to nginx!
   http://localhost/test.php:
     status: 200
-    allow-insecure: false
-    no-follow-redirects: false
-    timeout: 1000
     body:
     - Hello world!
   http://localhost/abc:
     status: 404
-    allow-insecure: false
-    no-follow-redirects: false
-    timeout: 0
     body:
-    - 404 Not Found
+    - File not found

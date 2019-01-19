@@ -15,14 +15,12 @@ process:
 http:
   http://localhost/index.html:
     status: 200
-    allow-insecure: false
-    no-follow-redirects: false
-    timeout: 5000
     body:
     - "Welcome to nginx!"
+  http://localhost/abc:
+    status: 500
   http://localhost/test.php:
     status: 500
-    timeout: 5000
 file:
   /var/log/nginx/access.log:
     exists: true

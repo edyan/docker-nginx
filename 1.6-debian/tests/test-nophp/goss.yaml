@@ -13,14 +13,12 @@ process:
   nginx:
     running: true
 http:
-  http://localhost:
-    status: 404
+  http://localhost/index.html:
+    status: 200
     body:
-    - 404 Not Found
+    - Welcome to nginx on Debian!
   http://localhost/abc:
-    status: 404
-    body:
-    - 404 Not Found
+    status: 500
 file:
   /var/log/nginx/access.log:
     exists: true

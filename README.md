@@ -4,8 +4,13 @@
 
 Docker Hub: https://hub.docker.com/r/edyan/nginx
 
-Docker container containing Nginx that connects to an FPM service. If no FPM service available, nginx will still start
-but throw usual 404 errors when the actual file does not exist.
+Docker container containing Nginx that connects to an FPM service and redirects
+all requests to /index.php. 
+If the FPM service is not available, nginx will still start but throws 
+500 errors when the actual file does not exist.
+
+**WARNING** : If you have an index.php, everything will be redirected to it. If your index.php
+is not able to manage routes, you'll have a strange behavior. 
 
 Also it has a "rewrite rule" that sends everything to index.php.
 

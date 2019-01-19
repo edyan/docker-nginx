@@ -11,31 +11,29 @@ DIRECTORY=$(cd `dirname $0` && pwd)
 VERSION=$1
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
+TAG=edyan/nginx:${VERSION}
 
-cd ${DIRECTORY}/${1}
-docker build -t "edyan_nginx${VERSION}_test" .
-
+echo "Building ${VERSION}"
+./build.sh ${VERSION} > /dev/null
 
 echo ""
-echo -e "${GREEN}Test without PHP and default Document Root${NC}"
+echo -e "${GREEN}Test ${TAG} without PHP and default Document Root${NC}"
 cd ${DIRECTORY}/${1}/tests/test-nophp
-dgoss run "edyan_nginx${VERSION}_test"
-
-# echo ""
-# echo -e "${GREEN}Test without PHP and another document root${NC}"
-# dgoss run -e NGINX_DOCUMENT_ROOT=/tmp/testdocroot --name nginx_test "edyan_nginx${VERSION}_test"
+dgoss run ${TAG}
 
 
 echo ""
-echo -e "${GREEN}Test with PHP${NC}"
+echo -e "${GREEN}Test ${TAG} with PHP${NC}"
 # clean
 docker stop php-test-ctn || : true > /dev/null
-# create network and containers to run tests
+# create network and PHP container to run tests
 docker network create nginx-test || : true > /dev/null
-docker run -d --rm --network nginx-test --name php-test-ctn edyan/php:latest
-docker exec php-test-ctn bash -c "mkdir /var/www && echo \"<?='Hello world!'?>\" > /var/www/test.php"
+docker run -d --rm --network nginx-test --name php-test-ctn edyan/php
+docker exec php-test-ctn bash -c "mkdir -p /var/www && echo \"<?='Hello world!'?>\" > /var/www/test.php"
+# Go with nginx container
+echo "Launching ${VERSION}"
 cd ${DIRECTORY}/${1}/tests/test-php
-dgoss run --network nginx-test -e PHP_HOST=php-test-ctn "edyan_nginx${VERSION}_test"
+dgoss run --network nginx-test -e PHP_HOST=php-test-ctn ${TAG}
 # clean
 docker stop php-test-ctn || : true > /dev/null
 docker network rm nginx-test || : true > /dev/null

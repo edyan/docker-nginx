@@ -29,15 +29,5 @@ process:
 http:
   http://localhost/index.html:
     status: 200
-    allow-insecure: false
-    no-follow-redirects: false
-    timeout: 5000
     body:
     - Welcome to nginx!
-  http://localhost/abc:
-    status: 404
-    allow-insecure: false
-    no-follow-redirects: false
-    timeout: 0
-    body:
-    - 404 Not Found
