@@ -1,9 +1,18 @@
+{{if eq .Env.OS "debian"}}
 package:
   nginx:
     installed: true
     versions:
       contain-element:
-        match-regexp: "1.10.+deb9u[0-9]+"
+        match-regexp: "{{.Env.VERSION}}.+"
+{{end}}
+command:
+  nginx -v:
+    exit-status: 0
+    stdout: []
+    stderr:
+      - 'nginx/{{.Env.VERSION}}'
+    timeout: 10000
 port:
   tcp:80:
     listening: true
@@ -18,19 +27,10 @@ http:
     body:
     - "Welcome to nginx!"
   http://localhost/abc:
-    status: 500
+    status: 404
   http://localhost/test.php:
-    status: 500
-file:
-  /var/log/nginx/access.log:
-    exists: true
-    mode: "0644"
-    owner: root
-    group: root
-    filetype: file
-  /var/log/nginx/error.log:
-    exists: true
-    mode: "0644"
-    owner: root
-    group: root
-    filetype: file
+    status:
+      or:
+        - 500
+        - 502
+    timeout: 5000

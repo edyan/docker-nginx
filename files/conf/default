@@ -9,22 +9,25 @@ server {
     index index.php index.html index.htm;
 
     location / {
-        try_files $uri $uri/ /index.php$is_args$args;
+        try_files $uri $uri/ /index.php$is_args$args =404;
     }
 
     location ~ \.php$ {
-        resolver 127.0.0.11;
+        resolver 127.0.0.11 valid=30s ipv6=off;
+        resolver_timeout 3s;
 
         set $upstream ${PHP_HOST}:${PHP_PORT};
         fastcgi_pass  $upstream;
-        fastcgi_split_path_info ^(.+\.php)(/.*)$;
         fastcgi_index index.php;
         fastcgi_intercept_errors on;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param SERVER_NAME $host;
+        fastcgi_read_timeout ${FASTCGI_READ_TIMEOUT};
+        fastcgi_send_timeout ${FASTCGI_SEND_TIMEOUT};
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
     }
 
-    error_log /var/log/nginx/error.log;
-    access_log /var/log/nginx/access.log;
+    error_log stderr info;
+    access_log /dev/stdout;
 }

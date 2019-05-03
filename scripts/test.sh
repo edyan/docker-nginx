@@ -1,27 +1,30 @@
 #!/bin/bash
-
 set -e
 
-if [ -z "$1" -o ! -d "$1" ]; then
-    echo "You must define a valid Nginx version to build as parameter"
+if [[ -z "${1}" || ! -f "Dockerfile-${1}" ]]; then
+    echo "You must define a valid image version to build as parameter"
     exit 1
 fi
 
-DIRECTORY=$(cd `dirname $0` && pwd)
-VERSION=$1
+VERSION=${1}
+VERSION_MINOR="$( echo ${VERSION} | cut -d"-" -f1 )"
+OS="$( echo ${VERSION} | cut -d"-" -f2 )"
+DIRECTORY="$( cd "$( dirname "$0" )" && pwd )"
+TAG=edyan/nginx:${VERSION}
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-TAG=edyan/nginx:${VERSION}
 
-echo "Building ${VERSION}"
-./build.sh ${VERSION} > /dev/null
+cd
+echo "Building image"
+${DIRECTORY}/build.sh ${VERSION} > /dev/null
 
+# Without PHP
 echo ""
 echo -e "${GREEN}Test ${TAG} without PHP and default Document Root${NC}"
-cd ${DIRECTORY}/${1}/tests/test-nophp
-dgoss run ${TAG}
+cd ${DIRECTORY}/../tests/test-nophp
+dgoss run -e FASTCGI_READ_TIMEOUT=2s -e FASTCGI_SEND_TIMEOUT=2s -e OS=${OS} -e VERSION=${VERSION_MINOR} ${TAG}
 
-
+# With PHP
 echo ""
 echo -e "${GREEN}Test ${TAG} with PHP${NC}"
 # clean
@@ -30,10 +33,10 @@ docker stop php-test-ctn || : true > /dev/null
 docker network create nginx-test || : true > /dev/null
 docker run -d --rm --network nginx-test --name php-test-ctn edyan/php
 docker exec php-test-ctn bash -c "mkdir -p /var/www && echo \"<?='Hello world!'?>\" > /var/www/test.php"
-# Go with nginx container
+# Launch nginx container
 echo "Launching ${VERSION}"
-cd ${DIRECTORY}/${1}/tests/test-php
-dgoss run --network nginx-test -e PHP_HOST=php-test-ctn ${TAG}
+cd ${DIRECTORY}/../tests/test-php
+dgoss run -e OS=${OS} -e VERSION=${VERSION_MINOR} --network nginx-test -e PHP_HOST=php-test-ctn ${TAG}
 # clean
 docker stop php-test-ctn || : true > /dev/null
 docker network rm nginx-test || : true > /dev/null

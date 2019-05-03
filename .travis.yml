@@ -13,6 +13,7 @@ script:
   # Don't do that else it's too slow : - sudo apt-get upgrade
   - sudo apt-get install -y --no-install-recommends curl
   - curl -fsSL https://goss.rocks/install | sudo sh
-  - ./test.sh 1.6-debian
-  - ./test.sh 1.10-debian
-  - ./test.sh 1.15-alpine
+  - scripts/test.sh 1.6-debian
+  - scripts/test.sh 1.10-debian
+  - scripts/test.sh 1.14-debian
+  - scripts/test.sh 1.17-alpine

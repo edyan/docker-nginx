@@ -16,15 +16,25 @@ jobs:
             curl -fsSL https://goss.rocks/install | sh
 
       - run:
-          name: Test Debian Image
+          name: Test Debian Image 1.6
           command: |
-            # Important, change from mount to work on remote docker, see https://github.com/aelsabbahy/goss/pull/271
-            # If using machine image you do not need this.
             export GOSS_FILES_STRATEGY=cp
-            ./test.sh 1.10-debian
+            scripts/test.sh 1.6-debian
 
       - run:
-          name: Test Alpine Image
+          name: Test Debian Image 1.10
           command: |
             export GOSS_FILES_STRATEGY=cp
-            ./test.sh 1.15-alpine
+            scripts/test.sh 1.10-debian
+
+      - run:
+          name: Test Alpine Image 1.14
+          command: |
+            export GOSS_FILES_STRATEGY=cp
+            scripts/test.sh 1.14-debian
+
+      - run:
+          name: Test Alpine Image 1.17
+          command: |
+            export GOSS_FILES_STRATEGY=cp
+            scripts/test.sh 1.17-alpine

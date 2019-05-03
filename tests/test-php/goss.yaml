@@ -1,9 +1,11 @@
+{{if eq .Env.OS "debian"}}
 package:
   nginx:
     installed: true
     versions:
       contain-element:
-        match-regexp: "1.6.+deb8u[0-9]+"
+        match-regexp: "{{.Env.VERSION}}.+"
+{{end}}
 port:
   tcp:80:
     listening: true
@@ -16,25 +18,10 @@ http:
   http://localhost/index.html:
     status: 200
     body:
-    - Welcome to nginx on Debian!
+    - Welcome to nginx!
   http://localhost/test.php:
     status: 200
     body:
     - Hello world!
   http://localhost/abc:
     status: 404
-    body:
-    - File not found
-file:
-  /var/log/nginx/access.log:
-    exists: true
-    mode: "0644"
-    owner: root
-    group: root
-    filetype: file
-  /var/log/nginx/error.log:
-    exists: true
-    mode: "0644"
-    owner: root
-    group: root
-    filetype: file

@@ -30,23 +30,32 @@ If you have no `php` container, nginx will start without any upstream configurat
 
 
 ## Versions
-* `1.15-alpine` : A light version.
-* `1.10-debian` : A production lookalike version with Debian 9 (also `latest`).
+* `1.17-alpine` : A light version.
+* `1.14-debian` : A production lookalike version with Debian 10 (also `latest`).
+* `1.10-debian` : A production lookalike version with Debian 9
 * `1.6-debian` : A production lookalike version with Debian 8 (throws an error if there are no upstream).
 
 
 ## Environment variables
-Two variables have been created, to override the user and group that owns Nginx (and all its files). That's useful if you need to mount a volume and own the files. These environment variables are `NGINX_UID` and `NGINX_GID`.
+Two variables have been created, to override the user and group that owns Nginx 
+(and all its files). That's useful if you need to mount a volume and own the files. 
+These environment variables are `NGINX_UID` and `NGINX_GID`.
 
-Another two environment variables lets anybody override the `php` container name : `PHP_HOST` (default "php") and `PHP_PORT` (default "9000").
+Another two environment variables lets anybody override the `php` container name : 
+`PHP_HOST` (default "php") and `PHP_PORT` (default "9000").
 
-Finally, if you want to set your own document root, you can use `NGINX_DOCUMENT_ROOT` (default : `/var/www`)
+
+Finally: 
+* To set your own document root, you can use `NGINX_DOCUMENT_ROOT` (default : `/var/www`) 
+* To fine tune the fastcgi timeout you can change 
+`FASTCGI_READ_TIMEOUT` (default 20s) and `FASTCGI_SEND_TIMEOUT` (default 20s).
 
 
 ## Tests
 Tests are made with [goss](https://github.com/aelsabbahy/goss). After downloading it, run :
 ```bash
-./test.sh 1.6-debian
-./test.sh 1.10-debian
-./test.sh 1.15-alpine
+scripts/test.sh 1.6-debian
+scripts/test.sh 1.10-debian
+scripts/test.sh 1.14-debian
+scripts/test.sh 1.17-alpine
 ```

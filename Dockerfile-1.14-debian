@@ -1,0 +1,60 @@
+FROM        debian:buster-slim
+
+ARG         DEBIAN_FRONTEND=noninteractive
+
+# Set a default conf for apt install
+RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
+            # Upgrade the system and Install PHP
+            apt update && \
+            apt upgrade -y && \
+            # Packages
+            apt install -y nginx gettext-base && \
+            # Clean
+            rm -f /etc/nginx/sites-available/default && \
+            apt autoremove -y && apt autoclean && apt clean && \
+            # Empty some directories from all files and hidden files
+            rm -rf /build /tmp/* /usr/share/php/docs /usr/share/php/tests && \
+            find /root /var/lib/apt/lists /usr/share/man /usr/share/doc /var/cache /var/log -type f -delete
+
+# Configuration
+COPY        files/conf/default /etc/nginx/sites-available/default.tpl
+
+RUN         mv /var/www/html/* /var/www/ && rm -rf /var/www/html && \
+            mv /var/www/index.nginx-debian.html /var/www/index.html && \
+            # make a few replacement
+            sed -i 's/^user .*nginx;/user  www-data;/g' /etc/nginx/nginx.conf && \
+            sed -i 's/^[ \t]*access_log.*;$/    access_log \/dev\/stdout;/g' /etc/nginx/nginx.conf && \
+            sed -i 's/^error_log.*;$/error_log  stderr info;/g' /etc/nginx/nginx.conf
+
+COPY        files/conf/default /etc/nginx/conf.d/default.conf.tpl
+COPY        files/debian/docker-entrypoint.sh /docker-entrypoint.sh
+RUN         chmod +x /docker-entrypoint.sh
+
+ENV         NGINX_UID 33
+ENV         NGINX_GID 33
+ENV         NGINX_DOCUMENT_ROOT /var/www
+ENV         PHP_HOST  php
+ENV         PHP_PORT  9000
+ENV         FASTCGI_READ_TIMEOUT 20s
+ENV         FASTCGI_SEND_TIMEOUT 20s
+
+EXPOSE      80
+
+# At the end as it changes everytime ;)
+ARG         BUILD_DATE
+ARG         DOCKER_TAG
+ARG         VCS_REF
+LABEL       maintainer="Emmanuel Dyan <emmanueldyan@gmail.com>" \
+            org.label-schema.build-date=${BUILD_DATE} \
+            org.label-schema.name=${DOCKER_TAG} \
+            org.label-schema.description="Docker Nginx Image based on Debian or Alpine. Made to work with php-fpm." \
+            org.label-schema.url="https://cloud.docker.com/u/edyan/repository/docker/edyan/nginx" \
+            org.label-schema.vcs-url="https://github.com/edyan/docker-nginx" \
+            org.label-schema.vcs-ref=${VCS_REF} \
+            org.label-schema.schema-version="1.0" \
+            org.label-schema.vendor="edyan" \
+            org.label-schema.docker.cmd="docker run -d --rm ${DOCKER_TAG}"
+
+ENTRYPOINT  ["/docker-entrypoint.sh"]
+
+CMD         ["nginx", "-g", "daemon off;"]
