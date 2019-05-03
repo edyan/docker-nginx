@@ -31,7 +31,8 @@ If you have no `php` container, nginx will start without any upstream configurat
 
 ## Versions
 * `1.15-alpine` : A light version.
-* `1.10-debian` : A production lookalike version with Debian 9 (also `latest`).
+* `1.14-debian` : A production lookalike version with Debian 10 (also `latest`).
+* `1.10-debian` : A production lookalike version with Debian 9
 * `1.6-debian` : A production lookalike version with Debian 8 (throws an error if there are no upstream).
 
 
@@ -48,5 +49,6 @@ Tests are made with [goss](https://github.com/aelsabbahy/goss). After downloadin
 ```bash
 ./test.sh 1.6-debian
 ./test.sh 1.10-debian
+./test.sh 1.14-debian
 ./test.sh 1.15-alpine
 ```

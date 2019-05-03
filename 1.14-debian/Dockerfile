@@ -1,4 +1,4 @@
-FROM        debian:jessie-slim
+FROM        debian:buster-slim
 MAINTAINER  Emmanuel Dyan <emmanueldyan@gmail.com>
 
 ARG         DEBIAN_FRONTEND=noninteractive
@@ -6,15 +6,15 @@ ARG         DEBIAN_FRONTEND=noninteractive
 # Set a default conf for apt install
 RUN         echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends && \
             # Upgrade the system and Install PHP
-            apt-get update && \
-            apt-get upgrade -y && \
+            apt update && \
+            apt upgrade -y && \
             # Packages
-            apt-get install -y nginx gettext-base && \
+            apt install -y nginx gettext-base && \
             # Clean
             rm -f /etc/nginx/sites-available/default && \
-            apt-get autoremove -y && \
-            apt-get autoclean && \
-            apt-get clean && \
+            apt autoremove -y && \
+            apt autoclean && \
+            apt clean && \
             rm -rf /var/lib/apt/lists/* /usr/share/man/* /usr/share/doc/* /var/cache/* /var/log/*
 
 # Configuration

@@ -15,4 +15,5 @@ script:
   - curl -fsSL https://goss.rocks/install | sudo sh
   - ./test.sh 1.6-debian
   - ./test.sh 1.10-debian
+  - ./test.sh 1.14-debian
   - ./test.sh 1.15-alpine

@@ -13,9 +13,10 @@ NC='\033[0m' # No Color
 TAG=edyan/nginx:${VERSION}
 
 cd $1
+
 echo "Building ${TAG}"
 docker build -t ${TAG} .
-if [[ "$VERSION" == "1.15-alpine" ]]; then
+if [[ "$VERSION" == "1.14-debian" ]]; then
   echo ""
   echo "${TAG} will also be tagged 'latest'"
   docker tag ${TAG} edyan/nginx:latest
@@ -23,22 +24,21 @@ fi
 
 echo ""
 echo ""
-if [[ $? -eq 0 ]]; then
+if [ $? -eq 0 ]; then
     echo -e "${GREEN}Build Done${NC}."
     echo ""
     echo "Run (with PHP) :"
     echo "  docker network create nginx-test"
-    echo "  docker run -d --network nginx-test --rm --name php-test-ctn edyan/php:latest"
-    echo "  docker run -d --network nginx-test --rm -e PHP_HOST=php-test-ctn --name nginx${VERSION}-test-ctn ${TAG}"
-    echo "  docker exec -i -t nginx${VERSION}-test-ctn /bin/bash"
+    echo "  docker container run -d --rm --network nginx-test --name php edyan/php:latest"
+    echo "  docker container run -d --rm --network nginx-test --name nginx${VERSION}-test-ctn -p 8080:80 ${TAG}"
+    echo "  docker container exec -ti nginx${VERSION}-test-ctn /bin/bash"
     echo "Once Done : "
-    echo "  docker stop nginx${VERSION}-test-ctn"
-    echo "  docker stop php-test-ctn"
+    echo "  docker container stop nginx${VERSION}-test-ctn"
+    echo "  docker container stop php"
     echo "  docker network rm nginx-test"
     echo ""
     echo "Or if you want to directly enter the container, then remove it : "
-    echo "  docker run -ti --rm edyan_nginx${VERSION}_test /bin/sh"
-    echo ""
+    echo "  docker run -ti --rm edyan_nginx${VERSION}_test /bin/bash"
     echo "To push that version (and other of the same repo):"
-    echo "docker push edyan/nginx"
+    echo "  docker push edyan/nginx"
 fi
