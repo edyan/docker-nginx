@@ -5,7 +5,7 @@ CURRENT_NGINX_ID="$(id -u www-data)"
 if [[ "${CURRENT_NGINX_ID}" != "${NGINX_UID}" ]]; then
     echo "Fixing permissions for 'www-data'"
     usermod  -u ${NGINX_UID} www-data
-    groupmod -g ${NGINX_GID} www-data
+    groupmod -g ${NGINX_GID} www-data || true
     chown -R www-data:www-data /var/www
     echo "Permissions fixed"
 fi
