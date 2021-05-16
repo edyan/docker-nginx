@@ -31,12 +31,11 @@ echo -e "${GREEN}Test ${TAG} with PHP${NC}"
 docker stop php-test-ctn || : true > /dev/null
 # create network and PHP container to run tests
 docker network create nginx-test || : true > /dev/null
-docker run -d --rm --network nginx-test --name php-test-ctn edyan/php
-docker exec php-test-ctn bash -c "mkdir -p /var/www && echo \"<?='Hello world!'?>\" > /var/www/test.php"
+docker run -d --rm --network nginx-test --volume "${DIRECTORY}/../tests/www:/var/www" --name php-test-ctn edyan/php
 # Launch nginx container
 echo "Launching ${VERSION}"
 cd ${DIRECTORY}/../tests/test-php
-dgoss run -e OS=${OS} -e VERSION=${VERSION_MINOR} --network nginx-test -e PHP_HOST=php-test-ctn ${TAG}
+dgoss run --volume "${DIRECTORY}/../tests/www:/var/www" -e OS=${OS} -e VERSION=${VERSION_MINOR} --network nginx-test -e PHP_HOST=php-test-ctn ${TAG}
 # clean
 docker stop php-test-ctn || : true > /dev/null
 docker network rm nginx-test || : true > /dev/null

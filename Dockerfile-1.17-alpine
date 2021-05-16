@@ -32,6 +32,7 @@ ENV         FASTCGI_READ_TIMEOUT 20s
 ENV         FASTCGI_SEND_TIMEOUT 20s
 
 EXPOSE      80
+VOLUME      /var/www
 
 # At the end as it changes everytime ;)
 ARG         BUILD_DATE

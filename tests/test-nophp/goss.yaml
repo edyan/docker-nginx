@@ -29,8 +29,5 @@ http:
   http://localhost/abc:
     status: 404
   http://localhost/test.php:
-    status:
-      or:
-        - 500
-        - 502
+    status: 404
     timeout: 5000
